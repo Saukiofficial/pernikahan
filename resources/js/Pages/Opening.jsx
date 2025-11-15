@@ -8,41 +8,34 @@ import preweddingImage from '@/../images/prewedding.jpg';
 export default function Opening() {
   const [isVisible, setIsVisible] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [curtainOpen, setCurtainOpen] = useState(false);
-  const [sheerOpen, setSheerOpen] = useState(false);
-  const [spotlightActive, setSpotlightActive] = useState(false);
+  const [revealActive, setRevealActive] = useState(false);
+  const [glowActive, setGlowActive] = useState(false);
 
   useEffect(() => {
-    // Trigger sheer curtain first
-    const sheerTimer = setTimeout(() => {
-      setSheerOpen(true);
-    }, 500);
+    // Trigger cinematic reveal
+    const revealTimer = setTimeout(() => {
+      setRevealActive(true);
+    }, 300);
 
-    // Trigger velvet curtain
-    const curtainTimer = setTimeout(() => {
-      setCurtainOpen(true);
-    }, 1500);
+    // Trigger glow effect
+    const glowTimer = setTimeout(() => {
+      setGlowActive(true);
+    }, 800);
 
-    // Trigger spotlight
-    const spotlightTimer = setTimeout(() => {
-      setSpotlightActive(true);
-    }, 2500);
-
-    // Trigger content animation setelah tirai buka
+    // Trigger content animation
     const contentTimer = setTimeout(() => {
       setIsVisible(true);
-    }, 3500);
+    }, 1200);
 
     return () => {
-      clearTimeout(sheerTimer);
-      clearTimeout(curtainTimer);
-      clearTimeout(spotlightTimer);
+      clearTimeout(revealTimer);
+      clearTimeout(glowTimer);
       clearTimeout(contentTimer);
     };
   }, []);
 
-  // Generate realistic fabric folds
-  const generateFolds = (count) => {
+  // Generate particles for animation
+  const generateParticles = (count) => {
     return Array.from({ length: count }, (_, i) => i);
   };
 
@@ -52,7 +45,7 @@ export default function Opening() {
 
       {/* Background dengan overlay */}
       <div className="relative min-h-screen overflow-hidden">
-        {/* Background Image dengan overlay */}
+        {/* Background Image dengan cinematic reveal */}
         <div className="absolute inset-0 z-0">
           <img
             src={preweddingImage}
@@ -67,223 +60,59 @@ export default function Opening() {
             }}
           />
           {/* Overlay gradient untuk keterbacaan */}
+          <div className={`absolute inset-0 bg-gradient-to-b from-black via-black/50 to-black transition-opacity duration-2000 ${
+            revealActive ? 'opacity-0' : 'opacity-100'
+          }`}></div>
           <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/80 to-white/90"></div>
           <div className="absolute inset-0 bg-gradient-to-br from-pink-100/40 via-transparent to-blue-100/40"></div>
         </div>
 
-        {/* Spotlight Effect */}
+        {/* Cinematic Light Rays */}
         <div
-          className={`absolute inset-0 z-30 pointer-events-none transition-opacity duration-1000 ${
-            spotlightActive ? 'opacity-100' : 'opacity-0'
+          className={`absolute inset-0 z-30 pointer-events-none transition-opacity duration-2000 ${
+            glowActive ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-radial from-white/40 via-yellow-100/20 to-transparent rounded-full blur-3xl animate-spotlight-pulse"></div>
+          {/* Center glow */}
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-white/30 via-pink-100/20 to-transparent rounded-full blur-3xl animate-pulse-slow"></div>
+
+          {/* Rotating light rays */}
+          <div className="absolute inset-0 animate-rotate-slow">
+            {generateParticles(8).map((i) => (
+              <div
+                key={i}
+                className="absolute top-1/2 left-1/2 w-2 h-full origin-bottom"
+                style={{
+                  transform: `rotate(${i * 45}deg) translateY(-50%)`,
+                }}
+              >
+                <div className="w-full h-1/2 bg-gradient-to-t from-yellow-200/20 via-pink-200/10 to-transparent blur-xl"></div>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Curtain Container */}
-        <div className="absolute inset-0 z-40 pointer-events-none overflow-hidden">
-          {/* Curtain Rod - Enhanced */}
-          <div className="absolute top-0 left-0 right-0 h-12 z-50">
-            {/* Main rod body */}
-            <div className="absolute inset-x-0 top-2 h-3 bg-gradient-to-b from-yellow-400 via-yellow-600 to-yellow-800 shadow-2xl"></div>
-            {/* Rod highlight */}
-            <div className="absolute inset-x-0 top-2 h-1 bg-gradient-to-b from-yellow-200 to-transparent opacity-60"></div>
-            {/* Rod rings/brackets every 100px */}
-            <div className="absolute inset-x-0 top-0 flex justify-around items-center h-8">
-              {generateFolds(15).map((i) => (
-                <div key={i} className="w-3 h-6 bg-gradient-to-b from-yellow-500 via-yellow-600 to-yellow-700 rounded-full shadow-lg"></div>
-              ))}
+        {/* Floating Light Particles */}
+        <div className="absolute inset-0 z-25 pointer-events-none overflow-hidden">
+          {generateParticles(20).map((i) => (
+            <div
+              key={i}
+              className="absolute animate-float-particle"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 5}s`,
+                animationDuration: `${8 + Math.random() * 4}s`,
+              }}
+            >
+              <div
+                className="w-2 h-2 bg-white rounded-full blur-sm opacity-60"
+                style={{
+                  boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                }}
+              ></div>
             </div>
-            {/* Decorative rod finials (ends) */}
-            <div className="absolute -left-4 top-0 w-12 h-12 bg-gradient-to-br from-yellow-400 via-yellow-600 to-yellow-800 rounded-full shadow-2xl border-2 border-yellow-300"></div>
-            <div className="absolute -right-4 top-0 w-12 h-12 bg-gradient-to-br from-yellow-400 via-yellow-600 to-yellow-800 rounded-full shadow-2xl border-2 border-yellow-300"></div>
-          </div>
-
-          {/* LAYER 1: SHEER/TRANSPARENT CURTAIN (Opens First) */}
-          {/* Left Sheer Curtain */}
-          <div
-            className={`absolute top-12 left-0 w-1/2 h-full transition-all duration-[2000ms] ease-in-out z-45 ${
-              sheerOpen ? '-translate-x-full opacity-20' : 'translate-x-0 opacity-100'
-            }`}
-          >
-            <div className="relative w-full h-full">
-              {/* Sheer fabric with lace pattern */}
-              <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-pink-50/70 to-white/80 backdrop-blur-sm">
-                {/* Lace pattern overlay */}
-                <div className="absolute inset-0 opacity-30" style={{
-                  backgroundImage: 'radial-gradient(circle, pink 1px, transparent 1px)',
-                  backgroundSize: '20px 20px'
-                }}></div>
-                {/* Delicate folds */}
-                {generateFolds(8).map((i) => (
-                  <div key={i} className="absolute inset-y-0 w-1/8" style={{ left: `${i * 12.5}%` }}>
-                    <div className="h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-                  </div>
-                ))}
-              </div>
-              {/* Light shadow on edge */}
-              <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-pink-200/30 to-transparent"></div>
-            </div>
-          </div>
-
-          {/* Right Sheer Curtain */}
-          <div
-            className={`absolute top-12 right-0 w-1/2 h-full transition-all duration-[2000ms] ease-in-out z-45 ${
-              sheerOpen ? 'translate-x-full opacity-20' : 'translate-x-0 opacity-100'
-            }`}
-          >
-            <div className="relative w-full h-full">
-              {/* Sheer fabric with lace pattern */}
-              <div className="absolute inset-0 bg-gradient-to-l from-white/80 via-pink-50/70 to-white/80 backdrop-blur-sm">
-                {/* Lace pattern overlay */}
-                <div className="absolute inset-0 opacity-30" style={{
-                  backgroundImage: 'radial-gradient(circle, pink 1px, transparent 1px)',
-                  backgroundSize: '20px 20px'
-                }}></div>
-                {/* Delicate folds */}
-                {generateFolds(8).map((i) => (
-                  <div key={i} className="absolute inset-y-0 w-1/8" style={{ left: `${i * 12.5}%` }}>
-                    <div className="h-full w-full bg-gradient-to-l from-transparent via-white/20 to-transparent"></div>
-                  </div>
-                ))}
-              </div>
-              {/* Light shadow on edge */}
-              <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-pink-200/30 to-transparent"></div>
-            </div>
-          </div>
-
-          {/* LAYER 2: VELVET CURTAIN (Opens Second) */}
-          {/* Left Curtain Panel with Realistic Folds */}
-          <div
-            className={`absolute top-12 left-0 w-1/2 h-full transition-all duration-[2500ms] ease-in-out z-44 ${
-              curtainOpen ? '-translate-x-full opacity-30' : 'translate-x-0 opacity-100'
-            }`}
-          >
-            <div className="relative w-full h-full flex">
-              {/* Multiple fabric folds for realistic draping */}
-              {generateFolds(12).map((i) => (
-                <div key={i} className="flex-1 relative">
-                  {/* Fold peak (lighter) */}
-                  <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-rose-200 via-rose-300 to-rose-400">
-                    {/* Highlight on peak */}
-                    <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-white/20 to-transparent"></div>
-                  </div>
-                  {/* Fold valley (darker) */}
-                  <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-r from-rose-400 via-rose-500 to-rose-600">
-                    {/* Shadow in valley */}
-                    <div className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-r from-transparent to-black/30"></div>
-                  </div>
-                  {/* Subtle texture overlay */}
-                  <div className="absolute inset-0 opacity-10 bg-gradient-to-b from-transparent via-black to-transparent"
-                       style={{
-                         backgroundSize: '100% 20px',
-                         backgroundRepeat: 'repeat-y'
-                       }}></div>
-                </div>
-              ))}
-
-              {/* Overall shadow on right edge */}
-              <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-black/40 via-black/20 to-transparent pointer-events-none"></div>
-
-              {/* Velvet sheen effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent pointer-events-none"></div>
-
-              {/* Tassel with rope - Enhanced */}
-              <div className="absolute right-4 top-1/3 transform z-10">
-                {/* Decorative tassel holder */}
-                <div className="w-6 h-6 bg-gradient-to-br from-yellow-400 to-yellow-700 rounded-full shadow-xl mb-2"></div>
-                {/* Braided rope */}
-                <div className="relative w-5 h-40 mx-auto">
-                  <div className="absolute inset-0 bg-gradient-to-r from-yellow-700 via-yellow-600 to-yellow-700 rounded-full shadow-lg"></div>
-                  {/* Rope twist effect */}
-                  {generateFolds(8).map((i) => (
-                    <div key={i}
-                         className="absolute left-0 right-0 h-4 bg-gradient-to-r from-yellow-800/40 to-transparent rounded-full"
-                         style={{ top: `${i * 18}px` }}></div>
-                  ))}
-                </div>
-                {/* Tassel head */}
-                <div className="w-8 h-8 bg-gradient-to-b from-yellow-600 to-yellow-800 rounded-full mx-auto shadow-lg"></div>
-                {/* Tassel fringe - more realistic */}
-                <div className="flex justify-center gap-px mt-1">
-                  {generateFolds(12).map((i) => (
-                    <div key={i}
-                         className="w-1 bg-gradient-to-b from-yellow-600 via-yellow-700 to-yellow-800 rounded-full shadow"
-                         style={{ height: `${40 + Math.random() * 20}px` }}></div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Gold trim */}
-              <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-b from-yellow-400 via-yellow-600 to-yellow-700 shadow-lg"></div>
-            </div>
-          </div>
-
-          {/* Right Curtain Panel with Realistic Folds */}
-          <div
-            className={`absolute top-12 right-0 w-1/2 h-full transition-all duration-[2500ms] ease-in-out ${
-              curtainOpen ? 'translate-x-full opacity-30' : 'translate-x-0 opacity-100'
-            }`}
-          >
-            <div className="relative w-full h-full flex">
-              {/* Multiple fabric folds for realistic draping */}
-              {generateFolds(12).map((i) => (
-                <div key={i} className="flex-1 relative">
-                  {/* Fold valley (darker) - reversed for right side */}
-                  <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-l from-rose-400 via-rose-500 to-rose-600">
-                    {/* Shadow in valley */}
-                    <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-l from-transparent to-black/30"></div>
-                  </div>
-                  {/* Fold peak (lighter) */}
-                  <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-rose-200 via-rose-300 to-rose-400">
-                    {/* Highlight on peak */}
-                    <div className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-white/20 to-transparent"></div>
-                  </div>
-                  {/* Subtle texture overlay */}
-                  <div className="absolute inset-0 opacity-10 bg-gradient-to-b from-transparent via-black to-transparent"
-                       style={{
-                         backgroundSize: '100% 20px',
-                         backgroundRepeat: 'repeat-y'
-                       }}></div>
-                </div>
-              ))}
-
-              {/* Overall shadow on left edge */}
-              <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-black/40 via-black/20 to-transparent pointer-events-none"></div>
-
-              {/* Velvet sheen effect */}
-              <div className="absolute inset-0 bg-gradient-to-bl from-white/5 via-transparent to-transparent pointer-events-none"></div>
-
-              {/* Tassel with rope - Enhanced */}
-              <div className="absolute left-4 top-1/3 transform z-10">
-                {/* Decorative tassel holder */}
-                <div className="w-6 h-6 bg-gradient-to-br from-yellow-400 to-yellow-700 rounded-full shadow-xl mb-2"></div>
-                {/* Braided rope */}
-                <div className="relative w-5 h-40 mx-auto">
-                  <div className="absolute inset-0 bg-gradient-to-r from-yellow-700 via-yellow-600 to-yellow-700 rounded-full shadow-lg"></div>
-                  {/* Rope twist effect */}
-                  {generateFolds(8).map((i) => (
-                    <div key={i}
-                         className="absolute left-0 right-0 h-4 bg-gradient-to-r from-yellow-800/40 to-transparent rounded-full"
-                         style={{ top: `${i * 18}px` }}></div>
-                  ))}
-                </div>
-                {/* Tassel head */}
-                <div className="w-8 h-8 bg-gradient-to-b from-yellow-600 to-yellow-800 rounded-full mx-auto shadow-lg"></div>
-                {/* Tassel fringe - more realistic */}
-                <div className="flex justify-center gap-px mt-1">
-                  {generateFolds(12).map((i) => (
-                    <div key={i}
-                         className="w-1 bg-gradient-to-b from-yellow-600 via-yellow-700 to-yellow-800 rounded-full shadow"
-                         style={{ height: `${40 + Math.random() * 20}px` }}></div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Gold trim */}
-              <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-yellow-400 via-yellow-600 to-yellow-700 shadow-lg"></div>
-            </div>
-          </div>
+          ))}
         </div>
 
         {/* Decorative elements */}
@@ -296,7 +125,7 @@ export default function Opening() {
           <div className="text-6xl text-pink-300 opacity-40">💕</div>
         </div>
         <div className="absolute left-12 top-1/3 z-10 animate-float-delayed">
-          <div className="text-4xl text-red-300 opacity-30">💝</div>
+          <div className="text-4xl text-red-300 opacity-30">💓</div>
         </div>
         <div className="absolute left-8 top-2/3 z-10 animate-float-slow-reverse">
           <div className="text-5xl text-pink-400 opacity-35">💖</div>
@@ -310,7 +139,7 @@ export default function Opening() {
           <div className="text-4xl text-pink-300 opacity-35">💗</div>
         </div>
         <div className="absolute right-6 top-3/4 z-10 animate-float-slow-reverse">
-          <div className="text-6xl text-pink-400 opacity-30">💓</div>
+          <div className="text-6xl text-pink-400 opacity-30">💝</div>
         </div>
 
         {/* Sparkles */}
@@ -463,9 +292,9 @@ export default function Opening() {
 
             {/* Decorative hearts */}
             <div className="flex justify-center gap-2 mt-6 animate-bounce" style={{ animationDelay: '1600ms' }}>
-              <span className="text-pink-400">❤</span>
-              <span className="text-red-400">❤</span>
-              <span className="text-pink-400">❤</span>
+              <span className="text-pink-400">♥</span>
+              <span className="text-red-400">♥</span>
+              <span className="text-pink-400">♥</span>
             </div>
           </div>
 
@@ -548,14 +377,36 @@ export default function Opening() {
             }
           }
 
-          @keyframes spotlight-pulse {
+          @keyframes pulse-slow {
             0%, 100% {
               transform: translate(-50%, -50%) scale(1);
-              opacity: 0.6;
+              opacity: 0.3;
             }
             50% {
-              transform: translate(-50%, -50%) scale(1.1);
-              opacity: 0.8;
+              transform: translate(-50%, -50%) scale(1.2);
+              opacity: 0.5;
+            }
+          }
+
+          @keyframes rotate-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+
+          @keyframes float-particle {
+            0% {
+              transform: translateY(0) translateX(0);
+              opacity: 0;
+            }
+            10% {
+              opacity: 0.6;
+            }
+            90% {
+              opacity: 0.6;
+            }
+            100% {
+              transform: translateY(-100vh) translateX(50px);
+              opacity: 0;
             }
           }
 
@@ -630,8 +481,16 @@ export default function Opening() {
             animation-delay: 2s;
           }
 
-          .animate-spotlight-pulse {
-            animation: spotlight-pulse 4s ease-in-out infinite;
+          .animate-pulse-slow {
+            animation: pulse-slow 4s ease-in-out infinite;
+          }
+
+          .animate-rotate-slow {
+            animation: rotate-slow 40s linear infinite;
+          }
+
+          .animate-float-particle {
+            animation: float-particle 10s linear infinite;
           }
         `}</style>
       </div>

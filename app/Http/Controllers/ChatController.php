@@ -22,25 +22,22 @@ class ChatController extends Controller
     // Menyimpan pesan baru
     public function store(Request $request)
     {
-        // 1. VALIDASI DIPERBARUI (menggunakan 'name' dan 'message')
+        // 1. VALIDASI DIPERBARUI
         $data = $request->validate([
             'name' => 'required|string|max:100',
             'message' => 'required|string|max:500',
         ]);
 
-        // 2. PENYIMPANAN DIPERBARUI (menggunakan 'name' dan 'message')
+        // 2. PENYIMPANAN DIPERBARUI
         $message = Message::create([
             'name' => $data['name'],
             'message' => $data['message'],
         ]);
 
         // 3. Siarkan event (Broadcasting)
-        // Kita perlu memuat relasi (jika ada) atau memastikan data lengkap
-        // Dalam kasus sederhana ini, $message sudah cukup
         broadcast(new NewMessageSent($message))->toOthers();
 
         // 4. Redirect kembali ke halaman RSVP
-        // Inertia akan otomatis mengambil 'initialMessages' yang baru
         return redirect()->route('rsvp');
     }
 }

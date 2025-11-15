@@ -134,7 +134,7 @@ export default function BottomNavbar() {
     { href: '/resepsi', icon: Diamond, label: 'Resepsi' },
     { href: '/maps', icon: MapPin, label: 'Maps' },
     { href: '/rsvp', icon: CalendarCheck, label: 'Rsvp' },
-    { href: '/gift', icon: Gift, label: 'Gift' },
+    // { href: '/gift', icon: Gift, label: 'Gift' },
     { href: '/lovestory', icon: BookOpen, label: 'Story' },
     { href: '/quotes', icon: Quote, label: 'Quotes' },
     { href: '/gallery', icon: Image, label: 'Gallery' },

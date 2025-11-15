@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Head, router } from '@inertiajs/react';
 import { MailOpen, Heart } from 'lucide-react';
 
-export default function Cover() {
+// Terima props guestName
+export default function Cover({ guestName = 'Tamu Undangan' }) {
   const [isVisible, setIsVisible] = useState(false);
   const [particles, setParticles] = useState([]);
 
@@ -150,9 +151,23 @@ export default function Cover() {
                     isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                   }`}
                 >
-                  <p className="text-gray-200 text-lg mb-10 max-w-md mx-auto leading-relaxed font-light">
+                  <p className="text-gray-200 text-lg mb-4 max-w-md mx-auto leading-relaxed font-light">
                     Kami mengundang Anda untuk berbagi kebahagiaan dalam momen istimewa kami
                   </p>
+
+                  {/* TAMBAHAN UNTUK MENAMPILKAN NAMA TAMU */}
+                  <div className="mt-6 mb-10 p-4 bg-white/10 rounded-xl border border-white/20 backdrop-blur-sm">
+                    <p className="text-sm uppercase tracking-wider text-rose-300 mb-1">Kepada Yth:</p>
+                    {/* PERUBAHAN FONT DI SINI */}
+                    <h3
+                        className="text-4xl font-semibold text-white tracking-wide mt-2"
+                        style={{ fontFamily: "'Great Vibes', cursive" }}
+                    >
+                      {guestName}
+                    </h3>
+                  </div>
+                  {/* AKHIR BAGIAN TAMBAHAN */}
+
                 </div>
 
                 {/* CTA Button with Magnetic Effect */}

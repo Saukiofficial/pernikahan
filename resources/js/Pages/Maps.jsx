@@ -14,8 +14,8 @@ export default function Maps() {
 
   const venueDetails = [
     { icon: MapPin, label: 'Alamat', value: '8°13\'15.3"S 112°39\'15.2"E', color: 'text-rose-600' },
-    { icon: Clock, label: 'Waktu', value: '10:00 - 16:00 WIB', color: 'text-amber-600' },
-    { icon: Calendar, label: 'Tanggal', value: 'Coming Soon', color: 'text-emerald-600' }
+    { icon: Clock, label: 'Waktu', value: '08:00 WIB - Selesai', color: 'text-amber-600' },
+    { icon: Calendar, label: 'Tanggal', value: '08 Desember 2025', color: 'text-emerald-600' }
   ];
 
   return (

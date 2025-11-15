@@ -7,7 +7,13 @@ use App\Http\Controllers\ChatController;
 
 // Halaman Cover (Splash Screen) - Tanpa Layout Utama
 Route::get('/', function () {
-    return Inertia::render('Cover');
+    // TAMBAHAN: Ambil query parameter 'to' dari URL
+    $to = request()->query('to') ?? 'Tamu Undangan';
+
+    return Inertia::render('Cover', [
+        // Kirim nama tamu sebagai props
+        'guestName' => $to
+    ]);
 });
 
 /*
@@ -16,6 +22,7 @@ Route::get('/', function () {
 
 // Halaman Utama (Opening)
 Route::get('/opening', function () {
+    // Kita tetap mengizinkan rute ini dibuka langsung
     return Inertia::render('Opening');
 })->name('opening');
 
@@ -81,4 +88,3 @@ Route::get('/gallery', function () {
 Route::get('/tanks', function () {
     return Inertia::render('Tanks');
 })->name('tanks');
-

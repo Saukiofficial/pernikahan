@@ -21,7 +21,7 @@ export default function MobileHeader({ title = "Undangan Pernikahan" }) {
     '/resepsi': 'Resepsi',
     '/maps': 'Lokasi',
     '/rsvp': 'RSVP',
-    '/gift': 'Hadiah',
+    // '/gift': 'Hadiah',
     '/lovestory': 'Love Story',
     '/quotes': 'Quotes',
     '/gallery': 'Gallery',
