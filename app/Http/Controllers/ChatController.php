@@ -35,10 +35,9 @@ class ChatController extends Controller
         ]);
 
         // 3. Siarkan event (Broadcasting)
-        broadcast(new NewMessageSent($message))->toOthers();
+        broadcast(new NewMessageSent($message));
 
         // 4. Redirect kembali ke halaman RSVP
         return redirect()->route('rsvp');
     }
 }
-
